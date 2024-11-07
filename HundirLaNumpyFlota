@@ -1,0 +1,134 @@
+import numpy as np
+import random
+
+TAMANIO_TABLERO = 20
+BARCOS = [2, 3, 4]
+
+ARCHIVO_GUARDADO = "archivo_de_guardado.txt"
+
+def crear_tablero():
+    tablero = np.zeros((TAMANIO_TABLERO, TAMANIO_TABLERO))
+    posiciones_barcos = []
+    for tamano in BARCOS:
+        colocado = False
+        while not colocado:
+            orientacion = np.random.choice(["H", "V"])
+            if orientacion == "H":
+                fila = np.random.randint(0, TAMANIO_TABLERO)
+                columna = np.random.randint(0, TAMANIO_TABLERO - tamano + 1)
+                if np.all(tablero[fila, columna:columna + tamano] == 0):
+                    tablero[fila, columna:columna + tamano] = 1
+                    posiciones_barcos.append([(fila, c) for c in range(columna, columna + tamano)])
+                    colocado = True
+            else:
+                fila = np.random.randint(0, TAMANIO_TABLERO - tamano + 1)
+                columna = np.random.randint(0, TAMANIO_TABLERO)
+                if np.all(tablero[fila:fila + tamano, columna] == 0):
+                    tablero[fila:fila + tamano, columna] = 1
+                    posiciones_barcos.append([(f, columna) for f in range(fila, fila + tamano)])
+                    colocado = True
+    return tablero, posiciones_barcos
+
+def mostrar_tablero(tablero):
+    for fila in tablero:
+        for cell in fila:
+            if cell == -1:
+                print("X", end=" ")
+            else:
+                print(".", end=" ")
+        print()
+
+def guardar_partida(tablero, intentos):
+    with open(ARCHIVO_GUARDADO, 'w') as f:
+        for fila in tablero:
+            f.write(" ".join(map(str, fila)) + "\n")
+        f.write("INTENTOS:" + str(intentos) + "\n")
+
+def cargar_partida():
+    tablero = np.zeros((TAMANIO_TABLERO, TAMANIO_TABLERO))
+    intentos = 0
+    posiciones_barcos = []
+
+def cargar_partida():
+    tablero = np.zeros((TAMANIO_TABLERO, TAMANIO_TABLERO))
+    intentos = 0
+    posiciones_barcos = []
+
+    try:
+        with open(ARCHIVO_GUARDADO, 'r') as f:
+            lineas = f.readlines()
+            if len(lineas) > 1:  # Asegurarse de que el archivo no esté vacío y tenga líneas para los intentos
+                for i, linea in enumerate(lineas[:-1]):
+                    if linea.strip():
+                        tablero[i] = list(map(lambda x: int(float(x)), linea.strip().split()))  
+                if lineas[-1].startswith("INTENTOS:"):
+                    intentos = int(lineas[-1].split(":")[1])
+    except FileNotFoundError:
+        print("No hay una partida guardada. Comenzando una nueva.")
+        return None, 0, []
+
+    if len(lineas) == 0:  # Si el archivo está vacío, devolvemos valores iniciales
+        return None, 0, []
+
+    for tamano in BARCOS:
+        posiciones_barcos.append([])
+
+    for i in range(len(posiciones_barcos)):
+        for fila in range(TAMANIO_TABLERO):
+            for col in range(TAMANIO_TABLERO):
+                if i == 0 and tablero[fila, col] == 1:
+                    posiciones_barcos[i].append((fila, col))
+
+    return tablero, intentos, posiciones_barcos
+
+def verificar_victoria(tablero, posiciones_barcos):
+    for barco in posiciones_barcos:
+        if not all(tablero[fila, col] == -1 for fila, col in barco):
+            return False
+    return True
+
+def jugar():
+    tablero, intentos, posiciones_barcos = cargar_partida()
+    
+    if tablero is None:
+        tablero, posiciones_barcos = crear_tablero()
+    print("¡Bienvenido a Hundir la Flota!")
+
+    while True:
+        mostrar_tablero(tablero)
+        try:
+            fila = int(input("Introduce la fila (0-19, o 111 para opciones): "))
+            if fila == 111:
+                print("Menú:\n1. Guardar Partida\n2. Salir")
+                opcion = int(input("Selecciona una opción: "))
+                if opcion == 1:
+                    guardar_partida(tablero, intentos)
+                    print("Partida guardada.")
+                elif opcion == 2:
+                    print("Saliendo del juego.")
+                    break
+                continue
+            col = int(input("Introduce la columna (0-19): "))
+
+            if fila < 0 or fila >= TAMANIO_TABLERO or col < 0 or col >= TAMANIO_TABLERO:
+                print("Coordenada fuera de rango. Intenta de nuevo.")
+                continue
+            
+            intentos += 1
+
+            if tablero[fila, col] == 1:
+                print("¡Tocado!")
+                tablero[fila, col] = -1
+            elif tablero[fila, col] == 0:
+                print("Agua")
+                tablero[fila, col] = -1
+
+            if verificar_victoria(tablero, posiciones_barcos):
+                print("¡Felicidades, has hundido todos los barcos!")
+                open(ARCHIVO_GUARDADO, 'w').close()
+                break
+
+        except ValueError:
+            print("Entrada no válida. Introduce números enteros.")
+
+jugar()
