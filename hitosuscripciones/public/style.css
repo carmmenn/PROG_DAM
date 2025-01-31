@@ -1,0 +1,84 @@
+body {
+    background-image: url("../b2625535-aaff-4884-8cbd-50302d053393.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    color: #D1E3DD;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(50, 41, 47, 0.8);
+    z-index: -1;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #A9B3E1;
+    font-weight: 500;
+}
+
+h2 {
+    color: #D1E3DD;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+input, select {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: #F1F1F1;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #5762D5;
+}
+
+.btn-primary {
+    background-color: #5762D5;
+    border-color: #5762D5;
+}
+
+.btn-primary:hover {
+    background-color: #6E7DAB;
+    border-color: #6E7DAB;
+}
+
+.btn-secondary {
+    background-color: #575366;
+    border-color: #575366;
+}
+
+.btn-secondary:hover {
+    background-color: #32292F;
+    border-color: #32292F;
+}
+
+.card {
+    border: 10px solid #FFFFFF;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.create-user .card {
+    transition: none;
+    transform: none;
+}
+
+body:not(.no-blur) .overlay {
+    backdrop-filter: blur(10px);
+}
