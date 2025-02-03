@@ -70,6 +70,7 @@ $users = $user->getAllUsers();
         <br>
         <div class="text-center">
             <a href="create_user.php" class="btn btn-secondary">Crear Nuevo Usuario</a>
+            <a href="../index.php" class="btn" style="background-color: #6C7AAB; color: white;">Volver al menú</a>
         </div>
     </main>
 
