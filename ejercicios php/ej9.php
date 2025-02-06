@@ -1,219 +1,207 @@
 <?php
 error_reporting(E_ALL);
 
-// ejercicio1
-class CuentaBancaria {
-    public $titular;
-    public $saldo;
-    public $tipoDeCuenta;
+// Ejercicio 1
+class Producto {
+    private $nombre;
+    private $precio;
+    private $cantidad;
 
-    public function __construct($titular, $saldoInicial, $tipoDeCuenta) {
+    public function __construct($nombre, $precio, $cantidad) {
+        $this->nombre = $nombre;
+        $this->precio = $precio;
+        $this->cantidad = $cantidad;
+    }
+
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getPrecio() {
+        return $this->precio;
+    }
+
+    public function getCantidad() {
+        return $this->cantidad;
+    }
+}
+
+class ProductoImportado extends Producto {
+    private $impuestoAdicional;
+
+    public function __construct($nombre, $precio, $cantidad, $impuestoAdicional) {
+        parent::__construct($nombre, $precio, $cantidad);
+        $this->impuestoAdicional = $impuestoAdicional;
+    }
+
+    public function calcularPrecioFinal() {
+        return $this->getPrecio() + ($this->getPrecio() * $this->impuestoAdicional / 100);
+    }
+}
+
+$producto = new Producto("Laptop", 1000, 5);
+$productoImportado = new ProductoImportado("Smartphone", 800, 3, 15);
+
+echo "Producto: " . $producto->getNombre() . " - Precio: $" . $producto->getPrecio() . " - Cantidad: " . $producto->getCantidad() . "\n";
+echo "Producto Importado: " . $productoImportado->getNombre() . " - Precio Final: $" . $productoImportado->calcularPrecioFinal() . "\n\n";
+
+// Ejercicio 2
+class CuentaBancaria {
+    private $titular;
+    private $saldo;
+    private $tipoCuenta;
+
+    public function __construct($titular, $tipoCuenta) {
         $this->titular = $titular;
-        $this->saldo = $saldoInicial;
-        $this->tipoDeCuenta = $tipoDeCuenta;
+        $this->saldo = 0;
+        $this->tipoCuenta = $tipoCuenta;
     }
 
     public function depositar($cantidad) {
         $this->saldo += $cantidad;
-        echo "Se han depositado $cantidad. Nuevo saldo: " . $this->saldo . "\n";
+        echo "Depósito de $cantidad realizado. Nuevo saldo: $this->saldo\n";
     }
 
     public function retirar($cantidad) {
-        if ($cantidad <= $this->saldo) {
+        if ($this->verificarSaldoSuficiente($cantidad)) {
             $this->saldo -= $cantidad;
-            echo "Se han retirado $cantidad. Nuevo saldo: " . $this->saldo . "\n";
+            echo "Retiro de $cantidad realizado. Nuevo saldo: $this->saldo\n";
         } else {
             echo "Saldo insuficiente para retirar $cantidad.\n";
         }
     }
 
-    public function mostrarInfo() {
-        echo "Titular: " . $this->titular . "\n";
-        echo "Tipo de cuenta: " . $this->tipoDeCuenta . "\n";
-        echo "Saldo actual: " . $this->saldo . "\n";
+    private function verificarSaldoSuficiente($cantidad) {
+        return $this->saldo >= $cantidad;
     }
 }
 
-$cuenta = new CuentaBancaria("Carmen Perez", 1000, "Ahorros");
-
+$cuenta = new CuentaBancaria("Juan Pérez", "Corriente");
 $cuenta->depositar(500);
-$cuenta->retirar(300);
-$cuenta->retirar(1500);
+$cuenta->retirar(200);
+$cuenta->retirar(400);
 
-$cuenta->mostrarInfo();
+echo "\n";
 
-// ejercicio2
-class Tarea {
-    public $nombre;
-    public $descripcion;
-    public $fechalimite;
-    public $estado;
+// Ejercicio 3
+class Usuario {
+    protected $nombre;
+    protected $email;
 
-    public function __construct($nombre, $descripcion, $fechalimite, $estado = "pendiente") {
+    public function __construct($nombre, $email) {
         $this->nombre = $nombre;
-        $this->descripcion = $descripcion;
-        $this->fechalimite = $fechalimite;
-        $this->estado = $estado;
+        $this->email = $email;
     }
 
-    public function marcarCompletada() {
-        $this->estado = "completada";
-    }
-
-    public function editarDescripcion($nuevaDescripcion) {
-        $this->descripcion = $nuevaDescripcion;
-    }
-
-    public function mostrarTarea() {
-        echo "Tarea: $this->nombre\n";
-        echo "Descripción: $this->descripcion\n";
-        echo "Fecha Límite: $this->fechalimite\n";
-        echo "Estado: $this->estado\n";
+    public function mostrarInfo() {
+        echo "Usuario: $this->nombre, Email: $this->email\n";
     }
 }
 
-$tareas = [
-    new Tarea("Comprar comida", "Ir al supermercado", "2025-02-10"),
-    new Tarea("Estudiar PHP", "Repasar POO en PHP", "2025-02-15")
-];
+class Administrador extends Usuario {
+    private $nivelAcceso;
 
-$tareas[0]->marcarCompletada();
-$tareas[1]->editarDescripcion("Estudiar programación orientada a objetos en PHP");
-
-foreach ($tareas as $tarea) {
-    $tarea->mostrarTarea();
-    echo "\n";
-}
-
-// ejercicio3
-class Empleado {
-    public $nombre;
-    public $sueldo;
-    public $aniosExperiencia;
-
-    public function __construct($nombre, $sueldo, $aniosExperiencia) {
-        $this->nombre = $nombre;
-        $this->sueldo = $sueldo;
-        $this->aniosExperiencia = $aniosExperiencia;
+    public function __construct($nombre, $email, $nivelAcceso) {
+        parent::__construct($nombre, $email);
+        $this->nivelAcceso = $nivelAcceso;
     }
 
-    public function calcularBonus() {
-        return ($this->sueldo * 0.05) * floor($this->aniosExperiencia / 2);
+    public function mostrarInfo() {
+        parent::mostrarInfo();
+        echo "Nivel de Acceso: $this->nivelAcceso\n";
+    }
+}
+
+$usuario = new Usuario("María López", "maria@example.com");
+$admin = new Administrador("Carlos Ruiz", "carlos@example.com", "SuperAdmin");
+
+$usuario->mostrarInfo();
+$admin->mostrarInfo();
+
+echo "\n";
+
+// Ejercicio 4
+class Vehiculo {
+    private $marca;
+    private $modelo;
+
+    public function __construct($marca, $modelo) {
+        $this->marca = $marca;
+        $this->modelo = $modelo;
+    }
+
+    public function encender() {
+        echo "El vehículo $this->marca $this->modelo está encendido.\n";
+    }
+}
+
+class Coche extends Vehiculo {
+    private $combustible;
+
+    public function __construct($marca, $modelo, $combustible) {
+        parent::__construct($marca, $modelo);
+        $this->combustible = $combustible;
     }
 
     public function mostrarDetalles() {
-        echo "Empleado: $this->nombre\n";
-        echo "Sueldo: $this->sueldo\n";
-        echo "Años de Experiencia: $this->aniosExperiencia\n";
-        echo "Bonus: " . $this->calcularBonus() . "\n";
+        echo "Coche: Marca: $this->marca, Modelo: $this->modelo, Combustible: $this->combustible\n";
     }
 }
 
-class Consultor extends Empleado {
-    public $horasPorProyecto;
+$coche = new Coche("Toyota", "Corolla", "Gasolina");
+$coche->encender();
+$coche->mostrarDetalles();
 
-    public function __construct($nombre, $sueldo, $aniosExperiencia, $horasPorProyecto) {
-        parent::__construct($nombre, $sueldo, $aniosExperiencia);
-        $this->horasPorProyecto = $horasPorProyecto;
-    }
-
-    public function calcularBonus() {
-        $bonusBase = parent::calcularBonus();
-        $bonusExtra = ($this->horasPorProyecto > 100) ? 500 : 0;
-        return $bonusBase + $bonusExtra;
-    }
-}
-
-$empleado = new Empleado("Juan Pérez", 3000, 6);
-$consultor = new Consultor("Ana Gómez", 4000, 4, 120);
-
-$empleado->mostrarDetalles();
 echo "\n";
-$consultor->mostrarDetalles();
 
-// ejercicio4
-class Carrito {
-    public $productos = [];
+// Ejercicio 5
+class Empleado {
+    private $nombre;
+    private $sueldo;
+    private $puesto;
 
-    public function agregarProducto($nombre, $precio, $cantidad) {
-        $this->productos[] = ["nombre" => $nombre, "precio" => $precio, "cantidad" => $cantidad];
-    }
-
-    public function quitarProducto($nombre) {
-        foreach ($this->productos as $key => $producto) {
-            if ($producto["nombre"] == $nombre) {
-                unset($this->productos[$key]);
-                break;
-            }
-        }
-    }
-
-    public function calcularTotal() {
-        $total = 0;
-        foreach ($this->productos as $producto) {
-            $total += $producto["precio"] * $producto["cantidad"];
-        }
-        return $total;
-    }
-
-    public function mostrarDetalleCarrito() {
-        echo "Carrito de compras:\n";
-        foreach ($this->productos as $producto) {
-            echo "{$producto['nombre']} - {$producto['cantidad']} unidades - ${$producto['precio']} c/u\n";
-        }
-        echo "Total a pagar: $" . $this->calcularTotal() . "\n";
-    }
-}
-
-$carrito = new Carrito();
-$carrito->agregarProducto("Laptop", 800, 1);
-$carrito->agregarProducto("Mouse", 20, 2);
-$carrito->mostrarDetalleCarrito();
-$carrito->quitarProducto("Mouse");
-$carrito->mostrarDetalleCarrito();
-
-// ejercicio5
-class Personaje {
-    public $nombre;
-    public $nivel;
-    public $puntosVida;
-    public $puntosAtaque;
-
-    public function __construct($nombre, $nivel, $puntosVida, $puntosAtaque) {
+    public function __construct($nombre, $sueldo, $puesto) {
         $this->nombre = $nombre;
-        $this->nivel = $nivel;
-        $this->puntosVida = $puntosVida;
-        $this->puntosAtaque = $puntosAtaque;
+        $this->sueldo = $sueldo;
+        $this->puesto = $puesto;
     }
 
-    public function atacar(Personaje $objetivo) {
-        $objetivo->puntosVida -= $this->puntosAtaque;
-        echo "$this->nombre ataca a $objetivo->nombre y le quita $this->puntosAtaque puntos de vida.\n";
+    public function setSueldo($nuevoSueldo) {
+        $this->sueldo = $nuevoSueldo;
     }
 
-    public function curarse() {
-        $this->puntosVida += 10;
-        echo "$this->nombre se cura y ahora tiene $this->puntosVida puntos de vida.\n";
+    public function getSueldo() {
+        return $this->sueldo;
     }
 
-    public function subirNivel() {
-        $this->nivel += 1;
-        $this->puntosAtaque += 5;
-        $this->puntosVida += 20;
-        echo "$this->nombre ha subido al nivel $this->nivel.\n";
+    public function getNombre() {
+        return $this->nombre;
     }
 
-    public function mostrarEstado() {
-        echo "Nombre: $this->nombre | Nivel: $this->nivel | Vida: $this->puntosVida | Ataque: $this->puntosAtaque\n";
+    public function getPuesto() {
+        return $this->puesto;
     }
 }
 
-$heroe = new Personaje("Héroe", 1, 50, 10);
-$villano = new Personaje("Villano", 1, 50, 8);
+class Manager extends Empleado {
+    private $departamento;
 
-$heroe->atacar($villano);
-$villano->curarse();
-$heroe->subirNivel();
-$villano->mostrarEstado();
-$heroe->mostrarEstado();
+    public function __construct($nombre, $sueldo, $puesto, $departamento) {
+        parent::__construct($nombre, $sueldo, $puesto);
+        $this->departamento = $departamento;
+    }
+
+    public function revisarEmpleado(Empleado $empleado) {
+        echo "El Manager está revisando al empleado: " . $empleado->getNombre() . ", Puesto: " . $empleado->getPuesto() . "\n";
+    }
+}
+
+$empleado1 = new Empleado("Pedro Gómez", 3000, "Desarrollador");
+$manager = new Manager("Lucía Fernández", 5000, "Gerente", "IT");
+
+$manager->revisarEmpleado($empleado1);
+echo "Sueldo antes del aumento: $" . $empleado1->getSueldo() . "\n";
+$empleado1->setSueldo(3500);
+echo "Sueldo después del aumento: $" . $empleado1->getSueldo() . "\n";
+
 ?>
