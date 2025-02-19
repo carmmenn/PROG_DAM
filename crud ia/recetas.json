@@ -1,0 +1,34 @@
+{
+    "recetas": [
+        {
+            "id": 1,
+            "titulo": "Tarta de manzana",
+            "ingredientes": null,
+            "elaboracion": null
+        },
+        {
+            "id": 2,
+            "titulo": "pastel de zanahoria",
+            "ingredientes": null,
+            "elaboracion": null
+        },
+        {
+            "id": 3,
+            "titulo": "paella valenciana",
+            "ingredientes": null,
+            "elaboracion": null
+        },
+        {
+            "id": 4,
+            "titulo": "paella valenciana",
+            "ingredientes": null,
+            "elaboracion": null
+        },
+        {
+            "id": 5,
+            "titulo": "pastel de zanahoria",
+            "ingredientes": null,
+            "elaboracion": null
+        }
+    ]
+}
