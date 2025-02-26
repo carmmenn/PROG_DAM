@@ -1,5 +1,4 @@
 <?php
-require_once "IaModel.php";
 require_once "modelo.php";
 
 $modelo = new Modelo();
