@@ -1,14 +1,14 @@
 <?php
-require_once "ia.php";
+require_once "IaModel.php";
 require_once "modelo.php";
 
 $modelo = new Modelo();
+$iaModel = new IaModel();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["titulo"])) {
     $titulo = $_POST["titulo"];
-    $iaResponse = json_decode(file_get_contents("http://localhost/ia.php?titulo=" . urlencode($titulo)), true);
-    $ingredientes = $iaResponse["ingredientes"];
-    $elaboracion = $iaResponse["elaboracion"];
+    $ingredientes = $iaModel->obtenerIngredientes($titulo);
+    $elaboracion = $iaModel->obtenerElaboracion($titulo);
     $modelo->agregarReceta($titulo, $ingredientes, $elaboracion);
     header("Location: index.php");
 }
@@ -38,7 +38,7 @@ $recetas = $modelo->obtenerRecetas();
         <?php foreach ($recetas as $receta): ?>
             <li>
                 <strong><?= $receta["titulo"] ?></strong>
-                <br>Ingredientes: <?= implode(", ", $receta["ingredientes"]) ?>
+                <br>Ingredientes: <?= $receta["ingredientes"] ?>
                 <br>Elaboración: <?= $receta["elaboracion"] ?>
                 <br><a href="?eliminar=<?= $receta["id"] ?>">Eliminar</a>
             </li>

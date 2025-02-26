@@ -1,34 +1,22 @@
 {
-    "recetas": [
-        {
-            "id": 1,
-            "titulo": "Tarta de manzana",
-            "ingredientes": null,
-            "elaboracion": null
-        },
-        {
+    "recetas": {
+        "1": {
             "id": 2,
             "titulo": "pastel de zanahoria",
-            "ingredientes": null,
-            "elaboracion": null
+            "ingredientes": "Un ingrediente com\u00fan para hacer pastel de zanahoria es la zanahoria fresca.\n\nEl pastel de zanahoria se elabora tradicionalmente haciendo una masa suelta, luego cubriendo con un revestimiento y horneando hasta que est\u00e9 dorado.",
+            "elaboracion": "No se encontr\u00f3 la elaboraci\u00f3n."
         },
-        {
+        "2": {
             "id": 3,
-            "titulo": "paella valenciana",
-            "ingredientes": null,
-            "elaboracion": null
+            "titulo": "Paella Valenciana",
+            "ingredientes": "Un cl\u00e1sico de la cocina espa\u00f1ola!\n\nUn ingrediente fundamental para hacer Paella Valenciana es el chorizo, espec\u00edficamente el \"chorizos negros\" (o \"chorizos morunos\") que son peque\u00f1os trozos de cerdo cocidos con ajo y especias.\n\nSin embargo, otro ingrediente muy caracter\u00edstico de la paella valenciana es el arroz blanco, tambi\u00e9n conocido como \"arroz blanco espa\u00f1ol\" o",
+            "elaboracion": "La paella valenciana es un plato t\u00edpico de la regi\u00f3n del Valencia, Espa\u00f1a, compuesto por arroz cocido con verduras y marisco, preparado a fuego lento durante varios d\u00edas para permitir que el sabor se desarrolle."
         },
-        {
-            "id": 4,
-            "titulo": "paella valenciana",
-            "ingredientes": null,
-            "elaboracion": null
-        },
-        {
-            "id": 5,
-            "titulo": "pastel de zanahoria",
-            "ingredientes": null,
-            "elaboracion": null
+        "3": {
+            "id": 3,
+            "titulo": "Tarta de manzana",
+            "ingredientes": "Claro, te proporcionar\u00e9 los ingredientes b\u00e1sicos para hacer una deliciosa tarta de manzana. Aqu\u00ed tienes:\n\nIngredientes:\n\nPara la masa de tarta:\n\n* 250 gramos de harina\n* 100 gramos de az\u00facar granulada\n* 50 gramos de mantequilla derretida\n* 4 huevos\n* 1 cucharadita de extracto de vainilla\n* 1\/",
+            "elaboracion": "La tarta de manzana se elabora mezclando la mantequilla, el az\u00facar y las especias con la ralladura de manzana, luego rellen\u00e1ndola con la masa de manzanas y cubri\u00e9ndola con una capa crujiente."
         }
-    ]
+    }
 }

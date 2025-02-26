@@ -17,15 +17,6 @@ class Modelo {
         return $this->leerBD()["recetas"];
     }
 
-    public function obtenerReceta($id) {
-        foreach ($this->leerBD()["recetas"] as $receta) {
-            if ($receta["id"] == $id) {
-                return $receta;
-            }
-        }
-        return null;
-    }
-
     public function agregarReceta($titulo, $ingredientes, $elaboracion) {
         $data = $this->leerBD();
         $id = count($data["recetas"]) + 1;
@@ -41,19 +32,6 @@ class Modelo {
     public function eliminarReceta($id) {
         $data = $this->leerBD();
         $data["recetas"] = array_filter($data["recetas"], fn($receta) => $receta["id"] != $id);
-        $this->guardarBD($data);
-    }
-
-    public function actualizarReceta($id, $titulo, $ingredientes, $elaboracion) {
-        $data = $this->leerBD();
-        foreach ($data["recetas"] as &$receta) {
-            if ($receta["id"] == $id) {
-                $receta["titulo"] = $titulo;
-                $receta["ingredientes"] = $ingredientes;
-                $receta["elaboracion"] = $elaboracion;
-                break;
-            }
-        }
         $this->guardarBD($data);
     }
 }
